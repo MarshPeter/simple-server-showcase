@@ -1,0 +1,188 @@
+:root {
+  --bg: #f6f7f9;
+  --panel: #ffffff;
+  --text: #1c1f24;
+  --muted: #6b7280;
+  --border: #e2e5ea;
+  --accent: #2f6fed;
+  --create: #1a8f4c;
+  --read: #2f6fed;
+  --update: #b7791f;
+  --delete: #c53030;
+  --code-bg: #f1f3f6;
+  /* Vermillion, deepened just enough for 5:1 contrast on --code-bg */
+  --json: #c2321a;
+  color-scheme: light;
+}
+
+@media (prefers-color-scheme: dark) {
+  :root {
+    --bg: #111317;
+    --panel: #1a1d23;
+    --text: #e8eaed;
+    --muted: #9aa1ab;
+    --border: #2c3038;
+    --accent: #6b9bff;
+    --create: #4cc38a;
+    --read: #6b9bff;
+    --update: #e0a64a;
+    --delete: #f07171;
+    --code-bg: #23262d;
+    /* Bright vermillion, 5.3:1 contrast on the dark --code-bg */
+    --json: #ff6a45;
+    color-scheme: dark;
+  }
+}
+
+* { box-sizing: border-box; }
+
+body {
+  margin: 0;
+  background: var(--bg);
+  color: var(--text);
+  font: 18px/1.5 system-ui, -apple-system, "Segoe UI", Roboto, sans-serif;
+}
+
+h1 { font-size: 2rem; margin: 0 0 0.25rem; }
+h2 { font-size: 1.25rem; margin: 0; }
+h4 { margin: 0 0 0.35rem; font-size: 0.85rem; text-transform: uppercase; letter-spacing: 0.04em; color: var(--muted); }
+code, pre { font-family: ui-monospace, "Cascadia Code", Menlo, Consolas, monospace; font-size: 0.85rem; }
+pre {
+  background: var(--code-bg);
+  border-radius: 6px;
+  padding: 0.5rem 0.75rem;
+  margin: 0.25rem 0 0;
+  overflow-x: auto;
+  white-space: pre-wrap;
+  word-break: break-word;
+}
+pre.json {
+  color: var(--json);
+  font-weight: 600;
+  font-size: 0.95rem;
+  border-left: 4px solid var(--json);
+}
+
+.muted { color: var(--muted); }
+.subtitle { color: var(--muted); margin: 0 0 1.25rem; }
+
+.layout {
+  display: grid;
+  grid-template-columns: minmax(0, 2fr) minmax(0, 1fr);
+  gap: 1.5rem;
+  max-width: 1400px;
+  margin: 0 auto;
+  padding: 1.5rem 16px;
+}
+@media (max-width: 1000px) {
+  .layout { grid-template-columns: minmax(0, 1fr); }
+}
+
+.board, .inspector {
+  background: var(--panel);
+  border: 1px solid var(--border);
+  border-radius: 12px;
+  padding: 1.25rem;
+  min-width: 0;
+}
+
+input:not([type="checkbox"]) {
+  font: inherit;
+  color: inherit;
+  background: var(--bg);
+  border: 1px solid var(--border);
+  border-radius: 8px;
+  padding: 0.5rem 0.75rem;
+  min-width: 0;
+}
+input[type="checkbox"] { width: 1.3rem; height: 1.3rem; accent-color: var(--accent); flex: none; }
+
+button {
+  font: inherit;
+  font-size: 0.9rem;
+  color: inherit;
+  background: var(--bg);
+  border: 1px solid var(--border);
+  border-radius: 8px;
+  padding: 0.4rem 0.7rem;
+  cursor: pointer;
+  display: inline-flex;
+  align-items: center;
+  gap: 0.4rem;
+}
+button:hover:not(:disabled) { border-color: var(--accent); }
+button:disabled { opacity: 0.5; cursor: default; }
+button.primary { background: var(--accent); border-color: var(--accent); color: #fff; font-size: 1rem; }
+
+.name { display: flex; align-items: center; gap: 0.75rem; margin-bottom: 0.75rem; font-size: 0.95rem; color: var(--muted); }
+.name input { flex: 1; max-width: 16rem; }
+
+.add { display: flex; gap: 0.5rem; margin-bottom: 1rem; }
+.add input { flex: 1; font-size: 1.1rem; }
+
+.error {
+  border: 1px solid var(--delete);
+  color: var(--delete);
+  border-radius: 8px;
+  padding: 0.5rem 0.75rem;
+  margin-bottom: 1rem;
+}
+
+.todos { list-style: none; padding: 0; margin: 0; }
+/* Rows are sized to be read from across a classroom (about 2x normal). */
+.todo {
+  display: flex;
+  align-items: center;
+  gap: 1.25rem;
+  min-height: 8.25rem;
+  padding: 1rem 0.5rem;
+  border-bottom: 2px solid var(--border);
+  flex-wrap: wrap;
+}
+.todo input[type="checkbox"] { width: 2.6rem; height: 2.6rem; cursor: pointer; }
+.todo .text, .todo .edit { flex: 1; min-width: 12rem; display: flex; flex-direction: column; gap: 0.25rem; }
+.todo .title { font-size: 2.2rem; line-height: 1.2; font-weight: 600; word-break: break-word; }
+.todo .meta { font-size: 1.2rem; line-height: 1.3; color: var(--muted); }
+.todo .edit input { width: 100%; font-size: 2.2rem; line-height: 1.2; padding: 0.3rem 0.75rem; border-radius: 12px; }
+.todo.done .title { text-decoration: line-through; text-decoration-thickness: 0.08em; color: var(--muted); }
+.todo .actions { display: flex; gap: 0.75rem; }
+.todo .actions button { font-size: 1.25rem; padding: 0.65rem 1.2rem; border-radius: 12px; border-width: 2px; }
+
+/* Phones: a little smaller so it fits a narrow screen. */
+@media (max-width: 600px) {
+  .todo { min-height: 6rem; gap: 0.9rem; padding: 0.9rem 0.25rem; }
+  .todo input[type="checkbox"] { width: 2rem; height: 2rem; }
+  .todo .text, .todo .edit { min-width: 0; }
+  .todo .title, .todo .edit input { font-size: 1.6rem; }
+  .todo .meta { font-size: 1rem; }
+  .todo .actions { width: 100%; }
+  .todo .actions button { font-size: 1.1rem; padding: 0.55rem 1rem; flex: 1; justify-content: center; }
+}
+.empty { padding: 1rem 0; }
+
+@media (prefers-color-scheme: dark) {
+  button.primary { color: #111317; }
+}
+
+.inspector-head { display: flex; justify-content: space-between; align-items: center; margin-bottom: 0.75rem; }
+.toggles { display: flex; flex-wrap: wrap; gap: 1rem; font-size: 0.9rem; color: var(--muted); margin-bottom: 1rem; }
+.toggles label { display: flex; align-items: center; gap: 0.4rem; }
+
+.exchange { border: 1px solid var(--border); border-radius: 8px; margin-bottom: 0.6rem; }
+.exchange.failed { border-color: var(--delete); }
+.exchange summary {
+  display: flex;
+  align-items: baseline;
+  gap: 0.6rem;
+  padding: 0.6rem 0.75rem;
+  cursor: pointer;
+  list-style: none;
+}
+.exchange summary::-webkit-details-marker { display: none; }
+.exchange .label { flex: 1; min-width: 0; font-size: 1.05rem; word-break: break-word; }
+.exchange .ms { color: var(--muted); font-size: 0.8rem; white-space: nowrap; }
+.action.create { color: var(--create); }
+.action.load { color: var(--read); }
+.action.edit, .action.update { color: var(--update); }
+.action.remove { color: var(--delete); }
+.steps { padding: 0 0.75rem 0.75rem; display: grid; gap: 0.75rem; }
